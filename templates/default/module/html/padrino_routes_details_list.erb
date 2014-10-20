@@ -2,13 +2,13 @@
   <div id="padrino_routes_details" class="method_details_list">
     <h2>Padrino Routing Details</h2>
     <% padrino_routes_listing.each do |item| %>
-      <h3>
+      <h2>
         <% if item[:controller].empty? %>
           Global Controller
         <% else %>
-          Controller <%= h(item[:controller]) %>
+          Controller <%= h(item[:controller].capitalize) %>
         <% end %>
-      </h3>
+      </h2>
       <% item[:routes].each_with_index do |route, i| %>
         <%= yieldall :object => route, :owner => object, :index => i %>
       <% end %>

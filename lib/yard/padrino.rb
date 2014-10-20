@@ -4,23 +4,13 @@ require 'yard'
 
 module YARD
   class CLI::Stats
-    # Statistics for Padrino Handlers
-    def stats_for_padrino_handlers
-      output "P) Handlers", *type_statistics(:padrino_handler)
-    end
-
     # Statistics for Padrino Routes
     def stats_for_padrino_routes
-      output "P) Routes", *type_statistics(:padrino_route)
+      output "Controller Routes", *type_statistics(:padrino_route)
     end
   end
 
   module Padrino
-    CONDITION_TAG = :'padrino.condition'
-
-    YARD::Tags::Library.define_tag("Conditions", CONDITION_TAG, :with_name)
-    YARD::Tags::Library.visible_tags << CONDITION_TAG
-
     YARD::Templates::Engine.register_template_path File.dirname(__FILE__) + '/../../templates'
 
     class RegexpObject
@@ -55,6 +45,7 @@ module YARD
       attr_accessor :verb
       attr_accessor :args
       attr_accessor :controller
+      attr_accessor :options
 
       def initialize(namespace, name, *args, &block)
         super
@@ -67,7 +58,14 @@ module YARD
       end
 
       def display_name
-        verb.to_s + " " + args.map { |p| p.inspect }.join(", ")
+        display = []
+        display << verb.to_s
+        if options && options[:map]
+          display << options[:map] if options && options[:map]
+        else
+          display << args.map { |p| p.inspect }.join(", ")
+        end
+        display.join(" ")
       end
 
       def self.method_name_for_handler(controller, verb, args)
@@ -280,12 +278,7 @@ module YARD
           o.controller = args[:controller]
           o.verb       = args[:verb]
           o.args       = args[:args]
-
-          if args[:options]
-            args[:options].each do |key, value|
-              o.docstring.add_tag YARD::Tags::Tag.new(CONDITION_TAG, '+' + value.inspect + '+', nil, key.inspect)
-            end
-          end
+          o.options    = args[:options]
         end
 
         block.call(handler) if block

@@ -7,7 +7,7 @@
       <% if item[:controller].empty? %>
         Global Controller
       <% else %>
-        Controller <%= h(item[:controller]) %>
+        Controller <%= h(item[:controller].capitalize) %>
       <% end %>
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h3>

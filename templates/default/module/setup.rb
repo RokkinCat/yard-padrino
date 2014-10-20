@@ -24,7 +24,7 @@ end
 
 def padrino_handlers
   unless @handlers
-    @handlers = object.children.select { |o| o.is_a?(YARD::Padrino::GeneralHandlerObject) }.sort
+    @handlers =  []
   end
 
   @handlers
@@ -63,12 +63,6 @@ def padrino_handlers_listing
     end
 
     @handlers_listing = []
-    methods.keys.sort.each do |controller|
-      @handlers_listing << {
-        controller: controller,
-        handlers:   methods[controller]
-      }
-    end
   end
 
   @handlers_listing

@@ -1,7 +1,7 @@
 def menu_lists
   list = super
 
-  item = { :type => 'padrino_handler', :title => 'Padrino Handler', :search_title => 'Padrino Handler List' }
+  item = { :type => 'padrino_handler', :title => 'Handlers', :search_title => 'Handler List' }
 
   at = -1
   list.each_with_index do |item, i|

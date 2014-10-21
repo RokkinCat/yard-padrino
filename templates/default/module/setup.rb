@@ -12,6 +12,11 @@ def init
 
   sections.place(padrino_summaries).before(:method_summary)
   sections.place(padrino_details).before(:method_details_list)
+  sections.delete(:method_details_list)
+  sections.delete(:method_details_summary)
+  sections.delete(:constant_summary)
+  sections.delete(:method_summary)
+  sections.delete(:pre_docstring)
 end
 
 def padrino_routes

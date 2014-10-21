@@ -62,7 +62,7 @@ module YARD
         display << verb.to_s
         if options && options[:map]
           display << options[:map] if options && options[:map]
-        else
+        elsif args
           display << args.map { |p| p.inspect }.join(", ")
         end
         display.join(" ")
@@ -148,6 +148,7 @@ module YARD
       namespace_only
 
       def process
+        parameters = []
         case statement.method_name(true)
         when :helpers
           process_helpers
@@ -239,7 +240,7 @@ module YARD
         register_padrino_handler(
           {
             :class        => RouteObject,
-            :group        => "Padrino Routings",
+            :group        => "Routes",
             :method_name  => method_name,
             :controller   => controller,
             :verb         => verb,
@@ -257,7 +258,7 @@ module YARD
         register_padrino_handler(
           {
             :class        => GeneralHandlerObject,
-            :group        => "Padrino Handlers",
+            :group        => "Handlers",
             :method_name  => method_name,
             :controller   => controller,
             :verb         => verb,
@@ -284,6 +285,9 @@ module YARD
         block.call(handler) if block
 
         register handler
+      rescue => e
+        puts "WTF A"
+        puts e.inspect
       end
 
       private
@@ -309,8 +313,10 @@ module YARD
             end
 
             result[key] = value
-          rescue YARD::Parser::UndocumentableError
+          rescue YARD::Parser::UndocumentableError => e
             # skip
+            puts "WTF B"
+            puts b.inspect
           end
         end
 
